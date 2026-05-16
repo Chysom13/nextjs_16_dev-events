@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import LightRays from "@/components/LightRays";
 import Narbar from "@/components/Narbar";
+import { PostHogProvider } from "./providers";
+import { Suspense } from "react";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -34,31 +36,32 @@ export default function RootLayout({
     >
       
       <body>
-        <Narbar />
-        <div className="absolute inset-0 top-0 z-[-1] min-h-screen">
-          <LightRays
-            raysOrigin="top-center"
-            raysColor="#5dfeca"
-            raysSpeed={0.5}
-            lightSpread={0.9}
-            rayLength={1.4}
-            followMouse={true}
-            mouseInfluence={0.02 }
-            noiseAmount={0}
-            distortion={0.01}
-            className="custom-rays"
-            pulsating={false}
-            fadeDistance={1}
-            saturation={1}
-        />
+        <PostHogProvider>
+          <Suspense>
+            <Narbar />
+            <div className="absolute inset-0 top-0 z-[-1] min-h-screen">
+              <LightRays
+                raysOrigin="top-center"
+                raysColor="#5dfeca"
+                raysSpeed={0.5}
+                lightSpread={0.9}
+                rayLength={1.4}
+                followMouse={true}
+                mouseInfluence={0.02}
+                noiseAmount={0}
+                distortion={0.01}
+                className="custom-rays"
+                pulsating={false}
+                fadeDistance={1}
+                saturation={1}
+              />
+            </div>
 
-        </div>
-
-        <main>
-          {children}
-
-        </main>
-
+            <main>
+              {children}
+            </main>
+          </Suspense>
+        </PostHogProvider>
       </body>
     </html>
   );
